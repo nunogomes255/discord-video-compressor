@@ -1,4 +1,4 @@
-# ffmpeg-shrinkwrap 📦
+# Discord Shrinkwrap 📦 Automated Video Compressor for Discord
 
 ![Bash](https://img.shields.io/badge/Bash-4EAA25?style=flat-square&logo=gnu-bash&logoColor=white)
 ![PowerShell](https://img.shields.io/badge/PowerShell-5391FE?style=flat-square&logo=powershell&logoColor=white)
@@ -8,7 +8,7 @@
 
 **A constraint-driven video compression pipeline designed for the Discord 20MB file limit.**
 
-`ffmpeg-shrinkwrap` automatically **compresses an entire directory worth of videos to fit Discord's 20MB limit** (or any target size) using **dynamic bitrate calculation** and intelligent fallback strategies. Works on Linux, macOS, WSL, and native Windows.
+`Discord Shrinkwrap` automatically **compresses an entire directory worth of videos to fit Discord's 20MB limit** (or any target size) using **dynamic bitrate calculation** and intelligent fallback strategies. Works on Linux, macOS, WSL, and native Windows.
 
 Unlike static presets, it calculates exact bitrates and uses a **heuristic** to balance quality against size constraints, automating the "trial and error" process of encoding, retrying, downscaling, and splitting.
 
@@ -90,18 +90,18 @@ Right-click `drag_videos_here.bat` → Properties → Unblock → OK
 #### Quick Install (System-Wide)
 ```bash
 # Clone repo
-git clone https://github.com/nunogomes255/ffmpeg-shrinkwrap.git
-cd ffmpeg-shrinkwrap
+git clone https://github.com/nunogomes255/discord-video-compressor.git
+cd discord-video-compressor
 
 # Install globally and make executable
-sudo cp shrinkwrap.sh /usr/local/bin/ffmpeg-shrinkwrap
-sudo chmod +x /usr/local/bin/ffmpeg-shrinkwrap
+sudo cp shrinkwrap.sh /usr/local/bin/discord-video-compressor
+sudo chmod +x /usr/local/bin/discord-video-compressor
 ```
 
 **Now run from anywhere:**
 ```bash
 cd /path/to/your/videos
-ffmpeg-shrinkwrap
+discord-video-compressor
 ```
 
 #### Usage
@@ -219,7 +219,7 @@ wins over the built-in default (software x265).
 The file is plain `key = value` (no external dependencies) with sensible defaults. Any setting omitted from the file falls back to built-in defaults:
 
 ```ini
-# ffmpeg-shrinkwrap preferences.
+# discord-video-compressor preferences.
 # Regenerate:  ./shrinkwrap.sh --config   |   .\shrinkwrap.ps1 -Config     (or edit by hand)
 # Delete this file to return to defaults (software x265, 19.8MB target).
 #
@@ -288,8 +288,8 @@ first that works wins -- so adding e.g. `h264_amf` to the list makes it selectab
 | `no_cleanup` | boolean | `false` | Preserve 2-pass log files and intermediate passes for inspection. |
 
 **Location:** the script directory is used first; if it isn't writable (e.g. a system-wide
-install), the file falls back to a per-user path -- `$XDG_CONFIG_HOME/ffmpeg-shrinkwrap/` (or
-`~/.config/ffmpeg-shrinkwrap/`) on Linux/macOS, `%APPDATA%\ffmpeg-shrinkwrap\` on Windows.
+install), the file falls back to a per-user path -- `$XDG_CONFIG_HOME/discord-video-compressor/` (or
+`~/.config/discord-video-compressor/`) on Linux/macOS, `%APPDATA%\discord-video-compressor\` on Windows.
 Read order is script-dir -> per-user -> built-in defaults. Both the Bash and PowerShell ports
 read and write the **identical** file, so a preference set in one is honored by the other.
 
