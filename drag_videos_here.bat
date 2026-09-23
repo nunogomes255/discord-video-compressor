@@ -7,14 +7,14 @@ setlocal
 chcp 65001 >nul
 cd /d "%~dp0"
 
-title FFmpeg Shrinkwrap - Discord Video Compressor
+title Discord Shrinkwrap - Discord Video Compressor
 
 :: ============================================
 ::   ONE-CLICK VIDEO COMPRESSOR FOR DISCORD
 :: ============================================
 echo.
 echo ========================================
-echo   FFmpeg Shrinkwrap v2.0
+echo   Discord Shrinkwrap v2.0
 echo   Compress videos for Discord (20MB)
 echo ========================================
 echo.

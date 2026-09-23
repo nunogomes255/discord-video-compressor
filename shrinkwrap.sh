@@ -40,6 +40,16 @@ trim() { # echo $1 with leading/trailing whitespace removed (pure bash, no subpr
 
 config_user_dir() { # per-user dir: Windows %APPDATA%, else $XDG_CONFIG_HOME, else ~/.config
     if [ -n "${APPDATA:-}" ]; then
+        printf '%s' "$APPDATA/discord-video-compressor"
+    elif [ -n "${XDG_CONFIG_HOME:-}" ]; then
+        printf '%s' "$XDG_CONFIG_HOME/discord-video-compressor"
+    else
+        printf '%s' "$HOME/.config/discord-video-compressor"
+    fi
+}
+
+config_legacy_user_dir() {
+    if [ -n "${APPDATA:-}" ]; then
         printf '%s' "$APPDATA/ffmpeg-shrinkwrap"
     elif [ -n "${XDG_CONFIG_HOME:-}" ]; then
         printf '%s' "$XDG_CONFIG_HOME/ffmpeg-shrinkwrap"
@@ -48,11 +58,13 @@ config_user_dir() { # per-user dir: Windows %APPDATA%, else $XDG_CONFIG_HOME, el
     fi
 }
 
-config_read_path() { # echo first existing conf (script-dir, then per-user); empty if none
+config_read_path() { # echo first existing conf (script-dir, then per-user, then legacy); empty if none
     if [ -f "$SCRIPT_DIR/$CONFIG_NAME" ]; then
         printf '%s' "$SCRIPT_DIR/$CONFIG_NAME"
     elif [ -f "$(config_user_dir)/$CONFIG_NAME" ]; then
         printf '%s' "$(config_user_dir)/$CONFIG_NAME"
+    elif [ -f "$(config_legacy_user_dir)/$CONFIG_NAME" ]; then
+        printf '%s' "$(config_legacy_user_dir)/$CONFIG_NAME"
     fi
 }
 
@@ -105,7 +117,7 @@ write_config() { # <mode> : write conf (preserving existing settings); echo path
     local no_clean="${CONFIG_NO_CLEANUP:-false}"
 
     local body
-    body="# ffmpeg-shrinkwrap preferences.
+    body="# discord-video-compressor preferences.
 # Regenerate:  ./shrinkwrap.sh --config   |   .\\shrinkwrap.ps1 -Config     (or edit by hand)
 # Delete this file to return to defaults (software x265, 19.8MB target).
 #
@@ -303,7 +315,7 @@ ui_rule() { # <glyph> <width> : print a horizontal rule
 
 ui_banner() { # <target_mb> <codec> <preset> <audio_mode>
     echo ""
-    printf "%s%s%s %sffmpeg-shrinkwrap%s  Discord video compressor\n" "$C_CYAN" "$G_BOX" "$C_RESET" "$C_BOLD" "$C_RESET"
+    printf "%s%s%s %sDiscord Shrinkwrap%s  Discord video compressor\n" "$C_CYAN" "$G_BOX" "$C_RESET" "$C_BOLD" "$C_RESET"
     printf "%s  target <= %s MB  |  codec %s  |  preset %s  |  audio %s%s\n" "$C_DIM" "$1" "$2" "$3" "$4" "$C_RESET"
     ui_rule "$G_HEAVY"
 }

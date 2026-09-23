@@ -20,7 +20,7 @@ $DownloadPath = Join-Path $PSScriptRoot "ffmpeg-essentials.zip"
 $ExtractPath = Join-Path $PSScriptRoot "ffmpeg-temp"
 
 Write-Host "========================================" -ForegroundColor Cyan
-Write-Host "  FFmpeg Shrinkwrap - Setup Wizard" -ForegroundColor Cyan
+Write-Host "  Discord Shrinkwrap - Setup Wizard" -ForegroundColor Cyan
 Write-Host "========================================" -ForegroundColor Cyan
 Write-Host ""
 Write-Host "About this download:" -ForegroundColor Gray

@@ -180,7 +180,7 @@ function Write-Banner {
     param([string]$Target, [string]$Codec, [string]$Preset, [string]$AudioMode)
     Write-Host ""
     Write-Host ("{0} " -f $Script:G.Box) -ForegroundColor Cyan -NoNewline
-    Write-Host "ffmpeg-shrinkwrap" -ForegroundColor White -NoNewline
+    Write-Host "Discord Shrinkwrap" -ForegroundColor White -NoNewline
     Write-Host "  Discord video compressor" -ForegroundColor Gray
     Write-Host ("  target <= {0} MB  |  codec {1}  |  preset {2}  |  audio {3}" -f $Target, $Codec, $Preset, $AudioMode) -ForegroundColor DarkGray
     Write-Rule $Script:G.Heavy
@@ -642,9 +642,9 @@ function Get-SoftwareEncoder {
 # Format: `key = value`, `#` comments, space-separated lists. Read precedence:
 # script-dir -> per-user -> built-in defaults. Write: script-dir, else per-user.
 function Get-ConfigUserDir {
-    if ($env:APPDATA)         { return (Join-Path $env:APPDATA 'ffmpeg-shrinkwrap') }
-    if ($env:XDG_CONFIG_HOME) { return (Join-Path $env:XDG_CONFIG_HOME 'ffmpeg-shrinkwrap') }
-    return (Join-Path $HOME '.config/ffmpeg-shrinkwrap')
+    if ($env:APPDATA)         { return (Join-Path $env:APPDATA 'discord-video-compressor') }
+    if ($env:XDG_CONFIG_HOME) { return (Join-Path $env:XDG_CONFIG_HOME 'discord-video-compressor') }
+    return (Join-Path $HOME '.config/discord-video-compressor')
 }
 
 function Get-ConfigReadPath {
@@ -652,6 +652,12 @@ function Get-ConfigReadPath {
     if (Test-Path -LiteralPath $sd) { return $sd }
     $ud = Join-Path (Get-ConfigUserDir) $Script:CONFIG_NAME
     if (Test-Path -LiteralPath $ud) { return $ud }
+    # Legacy fallback: check old ffmpeg-shrinkwrap config directory
+    $legacyUd = if ($env:APPDATA) { Join-Path $env:APPDATA 'ffmpeg-shrinkwrap' } `
+                elseif ($env:XDG_CONFIG_HOME) { Join-Path $env:XDG_CONFIG_HOME 'ffmpeg-shrinkwrap' } `
+                else { Join-Path $HOME '.config/ffmpeg-shrinkwrap' }
+    $legacyPath = Join-Path $legacyUd $Script:CONFIG_NAME
+    if (Test-Path -LiteralPath $legacyPath) { return $legacyPath }
     return $null
 }
 
@@ -718,7 +724,7 @@ function Write-Config {
     $noClean = if ($Script:CfgNoCleanup) { $Script:CfgNoCleanup } else { "false" }
 
     $content = @"
-# ffmpeg-shrinkwrap preferences.
+# discord-video-compressor preferences.
 # Regenerate:  ./shrinkwrap.sh --config   |   .\shrinkwrap.ps1 -Config     (or edit by hand)
 # Delete this file to return to defaults (software x265, 19.8MB target).
 #
